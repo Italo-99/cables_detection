@@ -216,4 +216,4 @@ if __name__ == "__main__":
     print("Detection time: {}".format(time.time()-time_start))
 
     # Display and process result
-    process_result_fastdlo(splines_f, mask_output_f)    # array [N_cables,t,cx,cy,k]
+    process_result_fastdlo(splines_f, mask_output_f)    # array[N_cables] -> [t,cx,cy,k]
