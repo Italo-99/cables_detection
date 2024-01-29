@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>cable_detection</name>
+  <name>cables_detection</name>
   
   <version>0.0.0</version>
   
-  <description>The cable detection cables</description>
+  <description>The cables detection package</description>
   
   <maintainer email="255778@studenti.unimore.it">kevin</maintainer>
 

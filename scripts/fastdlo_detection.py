@@ -122,12 +122,7 @@ def process_result_core(splines,mask_out):
 
     # Show the curve computed
     plt.tight_layout()
-    plt.show()
-    time.sleep(5)
-    plt.close()
-
-    # Close the window
-    plt.close()
+    plt.show()                  # The user can close the plot from the gui 
 
 # Process data coming from spline of fastdlo.py (tck extended spline, only spline interpolation)
 def process_result_fastdlo(splines,mask_out):
@@ -150,9 +145,7 @@ def process_result_fastdlo(splines,mask_out):
         index += 1
 
     plt.tight_layout()
-    plt.show()
-    time.sleep(5)
-    plt.close()
+    plt.show()              # The user can close the plot from the gui 
 
     # Show the results
     cv2.imshow("input", source_img)
@@ -174,7 +167,7 @@ if __name__ == "__main__":
     # SOURCE DATA
     ######################
     rospack = rospkg.RosPack()
-    package_path = rospack.get_path('cable_detection')
+    package_path = rospack.get_path('cables_detection')
     script_path = package_path + "/scripts/fastdlo_core/"
     ckpt_siam_name = "CP_similarity.pth"
     ckpt_seg_name = "CP_segmentation.pth"
@@ -184,31 +177,37 @@ if __name__ == "__main__":
     IMG_H = 360
     IMG_PATH = os.path.join(script_path,"test_images/0.jpg")
     ######################
+
+    # CORE.PY PIPELINE
     
     # Call an instance of core.py pipeline solver 
     p = Pipeline(checkpoint_siam=checkpoint_siam, checkpoint_seg=checkpoint_seg, img_w=IMG_W, img_h=IMG_H)
 
+    # Take the source color image
+    source_img = cv2.resize(cv2.imread(IMG_PATH, cv2.IMREAD_COLOR),(IMG_W, IMG_H))
+    
     # Measure prediction time
     time_start = time.time()
 
-    # Take the source color image
-    source_img = cv2.resize(cv2.imread(IMG_PATH, cv2.IMREAD_COLOR),(IMG_W, IMG_H))
-
     # Call the solver from core.py pipeline class
     spline, img_out = p.run(source_img=source_img, mask_th=200)
-    process_result_core(spline, img_out)    # key:{points,der,der2,radius,splineextended(t,c,k)}
 
     # Prediction time results
     print("Detection time: {}".format(time.time()-time_start))
 
+    # Process and display the results
+    process_result_core(spline, img_out)    # key:{points,der,der2,radius,splineextended(t,c,k)}
+
+    # FASTDLO.PY PIPELINE
+
     # Another way to make it work is to call fastdlo.py,the same class called by dlo3ds pipeline
     mainfolder = package_path + "/scripts"
-
-    # Measure prediction time
-    time_start = time.time()
     
     # Call an instance of fastdlo solver 
     f = FASTDLO(main_folder = mainfolder, mask_th = 200,img_w = IMG_W,img_h = IMG_H)
+
+    # Measure prediction time
+    time_start = time.time()
 
     # Call the solver with fastdlo.py fastdlo library
     splines_f, mask_output_f = f.run(img=source_img)
