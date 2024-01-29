@@ -1,0 +1,9 @@
+[submodule "AI_pkgs/DLO3DS"]
+	path = AI_pkgs/DLO3DS
+	url = https://github.com/lar-unibo/DLO3DS.git
+[submodule "AI_pkgs/mBEST"]
+	path = AI_pkgs/mBEST
+	url = https://github.com/StructuresComp/mBEST.git
+[submodule "AI_pkgs/RT-DLO"]
+	path = AI_pkgs/RT-DLO
+	url = https://github.com/lar-unibo/RT-DLO.git
