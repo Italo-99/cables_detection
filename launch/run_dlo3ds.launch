@@ -39,16 +39,16 @@
 
             <!-- RealSense params as taken by the topic /camera/depth/camera_info -->
             <!-- <arg name="camera_matrix" default="383.15765380859375,, 0.0, 316.5531921386719, 
-                                                0.0, 383.15765380859375, 238.53302001953125, 
-                                                0.0, 0.0, 1.0" />
+                                                    0.0, 383.15765380859375, 238.53302001953125, 
+                                                    0.0, 0.0, 1.0" />
             <arg name="distort_vec" default="0.000000, 0.000000, 0.000000, 0.000000, 0.000000"/>
             <arg name="camera_height" default="480" />
             <arg name="camera_width" default="640" /> -->
 
       <!-- RealSense params as taken by the topic /camera/aligned_depth_to_color/camera_info or /camera/color/camera_info-->
-      <arg name="camera_matrix" default="609.9419555664062, 0.0, 324.0304870605469, 
-                                          0.0, 608.6234130859375, 246.2322540283203, 
-                                          0.0, 0.0, 1.0" />
+      <arg name="camera_matrix" default="609.9419555664062, 0.0,               324.0304870605469, 
+                                           0.0,             608.6234130859375, 246.2322540283203, 
+                                           0.0,             0.0,               1.0" />
       <arg name="distort_vec" default="0.000000, 0.000000, 0.000000, 0.000000, 0.000000"/>
       <arg name="camera_height" default="480" />
       <arg name="camera_width" default="640" />
