@@ -206,6 +206,7 @@ include_directories(
 find_package(catkin REQUIRED COMPONENTS
   actionlib
   actionlib_msgs
+  fiducial_msgs
   geometry_msgs
   moveit_msgs
   moveit_core
@@ -223,10 +224,21 @@ find_package(Eigen3 REQUIRED)
 find_package(OpenCV REQUIRED)
 # find_package(Franka 0.5.0 REQUIRED)
 
+add_service_files(
+  FILES
+  Cable2D_Poses.srv
+)
+
+generate_messages(
+  DEPENDENCIES
+  sensor_msgs
+)
+
 catkin_package(
   CATKIN_DEPENDS 
   actionlib
   actionlib_msgs
+  fiducial_msgs
   geometry_msgs
   moveit_msgs 
   moveit_core

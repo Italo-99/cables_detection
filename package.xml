@@ -15,7 +15,7 @@
 
   <depend>actionlib </depend>
   <depend>actionlib_msgs</depend>
-  <depend>xmlrpcpp</depend>
+  <depend>fiducial_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>moveit_msgs</depend>
   <depend>roscpp</depend>
@@ -26,5 +26,6 @@
   <depend>moveit_ros_planning_interface</depend>
   <depend>sensor_msgs </depend>
   <depend> cv_bridge </depend>
+  <depend>xmlrpcpp</depend>
 
 </package>

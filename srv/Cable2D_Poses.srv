@@ -1,0 +1,3 @@
+sensor_msgs/Image input_image
+---
+float32[] centroids
