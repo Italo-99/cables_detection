@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
+cmake_policy(SET CMP0048 NEW)
 project(cables_detection)
 
 add_compile_options(-std=c++11)
@@ -206,18 +207,19 @@ include_directories(
 find_package(catkin REQUIRED COMPONENTS
   actionlib
   actionlib_msgs
+  cv_bridge
   fiducial_msgs
   geometry_msgs
-  moveit_msgs
-  moveit_core
-  moveit_visual_tools
-  moveit_ros_planning_interface
+  image_transport
+  message_generation
+# moveit_msgs
+# moveit_core
+# moveit_visual_tools
+# moveit_ros_planning_interface
   roscpp
   rospy
   std_msgs
   sensor_msgs
-  cv_bridge
-  image_transport
 )
 
 find_package(Eigen3 REQUIRED)
@@ -240,10 +242,10 @@ catkin_package(
   actionlib_msgs
   fiducial_msgs
   geometry_msgs
-  moveit_msgs 
-  moveit_core
-  moveit_visual_tools
-  moveit_ros_planning_interface
+# moveit_msgs
+# moveit_core
+# moveit_visual_tools
+# moveit_ros_planning_interface
   roscpp 
   rospy 
   sensor_msgs

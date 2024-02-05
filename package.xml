@@ -11,21 +11,22 @@
   <license>License Apache V2.0</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend> image_transport </build_depend>
 
   <depend>actionlib </depend>
   <depend>actionlib_msgs</depend>
+  <depend>cv_bridge </depend>
   <depend>fiducial_msgs</depend>
   <depend>geometry_msgs</depend>
-  <depend>moveit_msgs</depend>
+  <depend>image_transport</depend>
+  <depend>message_generation</depend>
+  <!-- <depend>moveit_msgs</depend>
+  <depend>moveit_visual_tools</depend>
+  <depend>moveit_core</depend>
+  <depend>moveit_ros_planning_interface</depend> -->
   <depend>roscpp</depend>
   <depend>rospy</depend>
   <depend>std_msgs</depend>
-  <depend>moveit_visual_tools</depend>
-  <depend>moveit_core</depend>
-  <depend>moveit_ros_planning_interface</depend>
   <depend>sensor_msgs </depend>
-  <depend> cv_bridge </depend>
   <depend>xmlrpcpp</depend>
 
 </package>
