@@ -228,12 +228,13 @@ find_package(OpenCV REQUIRED)
 
 add_service_files(
   FILES
-  Cable2D_Poses.srv
+  Cables2D_Poses.srv
 )
 
 generate_messages(
   DEPENDENCIES
   sensor_msgs
+  geometry_msgs
 )
 
 catkin_package(
