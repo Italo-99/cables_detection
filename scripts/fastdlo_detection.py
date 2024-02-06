@@ -168,6 +168,7 @@ if __name__ == "__main__":
     ######################
     rospack = rospkg.RosPack()
     package_path = rospack.get_path('cables_detection')
+    images_path = package_path + "/scripts/figures_test/fastdlo/"
     script_path = package_path + "/scripts/fastdlo_core/"
     ckpt_siam_name = "CP_similarity.pth"
     ckpt_seg_name = "CP_segmentation.pth"
@@ -175,7 +176,8 @@ if __name__ == "__main__":
     checkpoint_seg = os.path.join(script_path, "checkpoints/" + ckpt_seg_name)
     IMG_W = 640
     IMG_H = 360
-    IMG_PATH = os.path.join(script_path,"test_images/0.jpg")
+    IMG_PATH = os.path.join(images_path,"real_images/cables.jpg")
+    # IMG_PATH = os.path.join(images_path,"test_images/0.jpg")
     ######################
 
     # CORE.PY PIPELINE

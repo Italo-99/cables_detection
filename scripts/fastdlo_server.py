@@ -1,32 +1,40 @@
 #!/usr/bin/env python
 
-""" CENTROID ARUCO SERVER
-The following code has the only aim to compute the centroid of
-a fiducial marker detected.
+""" FASTDLO SERVER
+The following code has the only aim to return the
+spline of a cable detected.
 """
 
-from cables_detection.srv import Cables2D_Poses
-from cv_bridge import CvBridge
-import cv2
-from fiducial_msgs.msg import FiducialArray
-from geometry_msgs.msg import PoseArray,Pose
-import numpy as np
-import rospy
-from sensor_msgs.msg import Image
+# IMPORT LIBRARIES
+from    cables_detection.srv    import Cables2D_Poses
+from    cv_bridge               import CvBridge
+import  cv2
+from    geometry_msgs.msg       import PoseArray,Pose
+import  numpy as np
+import  os
+import  rospkg,rospy
+from    sensor_msgs.msg         import Image
 
-
-class Centroid_ArucoServer:
+# CLASS IMPLEMENTATION OF FASTDLO DETECTION SERVER
+class fastdlo_server:
 
     def __init__(self):
 
-        # Initialize global class variables
-        self.image = FiducialArray()
+        # FASTDLO detector init
+        rospack = rospkg.RosPack()
+        package_path = rospack.get_path('cables_detection')
+        script_path = package_path + "/scripts/fastdlo_core/"
+        ckpt_siam_name = "CP_similarity.pth"
+        ckpt_seg_name = "CP_segmentation.pth"
+        checkpoint_siam = os.path.join(script_path, "checkpoints/" + ckpt_siam_name)
+        checkpoint_seg = os.path.join(script_path, "checkpoints/" + ckpt_seg_name)
+        IMG_W = 640
+        IMG_H = 480
 
         # Initialize ROS node
-        rospy.init_node('centroid_arucoserver')
-        rospy.Subscriber('/fiducial_vertices', FiducialArray, self.fiducial_vertices_callback)
-        rospy.Service('centroid_aruco', Cables2D_Poses, self.handle_centroid_aruco)
-        rospy.loginfo("Ready to compute centroids of the fiducial vertices.")
+        rospy.init_node('fastdlo_server')
+        rospy.Service('fastdlo', Cables2D_Poses, self.splines_cables_detection)
+        rospy.loginfo("Ready to detect cables.")
 
         # Run ROS spinner
         spin_rate = rospy.Rate(1)
@@ -56,4 +64,4 @@ class Centroid_ArucoServer:
     
 if __name__ == "__main__":
     
-    Centroid_ArucoServer()
+    fastdlo_server()
