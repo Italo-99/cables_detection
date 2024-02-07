@@ -76,6 +76,8 @@ def process_result_core(splines,mask_out):
     cables = []
     for key, value in splines.items():                      # Iterate over the cables
         cables.append(np.int64(value.get('points')))        # Get cables 2D pixels coordinates
+    IMG_H = 480
+    IMG_W = 640
     spline_img = np.zeros((IMG_H,IMG_W,3), dtype=int)       # Convert spline to image
 
     # Store some colors in the image if that coordinate is in the cables array of np.arrays
@@ -89,16 +91,16 @@ def process_result_core(splines,mask_out):
     spline_img = np.uint8(spline_img*255)
 
     # Colored source image, but by giving different colors to each cable
-    canvas = source_img.copy()
-    canvas = cv2.addWeighted(canvas, 1.0, mask_out, 0.8, 0.0)
+    # canvas = source_img.copy()
+    # canvas = cv2.addWeighted(canvas, 1.0, mask_out, 0.8, 0.0)
     
     # Show the results
     # cv2.imshow("input", source_img)
     # cv2.imshow("canvas", canvas)
     # cv2.imshow("output", mask_out)
     # cv2.imshow("mySpline",spline_img)
-    # cv2.waitKey(5000)                  # Wait 5 seconds than close
-    # cv2.destroyAllWindows()s
+    # cv2.waitKey(1000)                  # Wait 5 seconds than close
+    # cv2.destroyAllWindows()
 
     # Compute tck B-curve values from xy spline (to show that they are similar to
     #   tck values already in the cables array)

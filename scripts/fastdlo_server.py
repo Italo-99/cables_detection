@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
 """ FASTDLO SERVER
-The following code has the only aim to return the
-spline of a cable detected.
-"""
+This server can return a list of PoseArray() made up of splines
+from detected cables using FASTDLO method""" 
 
 # IMPORT LIBRARIES
 from    cables_detection.srv    import Cables2D_Poses
@@ -19,10 +18,6 @@ import  rospkg,rospy
 from    sensor_msgs.msg         import Image
 import  time
 
-""" FASTDLO SERVER
-This server can return a list of PoseArray() made up of splines
-from detected cables using FASTDLO method""" 
-
 # CLASS IMPLEMENTATION OF FASTDLO DETECTION SERVER
 class fastdlo_server:
 
@@ -37,18 +32,22 @@ class fastdlo_server:
         ckpt_seg_name   = "CP_segmentation.pth"
         checkpoint_siam = os.path.join(script_path, "checkpoints/" + ckpt_siam_name)
         checkpoint_seg  = os.path.join(script_path, "checkpoints/" + ckpt_seg_name)
-        self.IMG_W      = 640       # PARAM
-        self.IMG_H      = 480       # PARAM
-        self.step       = 10        # PARAM: how many points are "jumped" during msg conversion
-
-        # Call an instance of core.py pipeline solver 
-        self.p = Pipeline(checkpoint_siam=checkpoint_siam, checkpoint_seg=checkpoint_seg,
-                          img_w=self.IMG_W, img_h=self.IMG_H)
         
         # Initialize ROS node
         rospy.init_node('fastdlo_server')
+
+        # Start the cables detection server
         rospy.Service('fastdlo', Cables2D_Poses, self.splines_cables_detection)
-        rospy.loginfo("Ready to detect cables.")
+
+        # Get node params
+        self.IMG_H = rospy.get_param('~image_height')
+        self.IMG_W = rospy.get_param('~image_width')
+        self.step  = rospy.get_param('~steps_cable')  # points "jumped" in the spline msg, default: 10
+
+        # Call an instance of core.py pipeline fastdlo solver 
+        self.p = Pipeline(checkpoint_siam=checkpoint_siam, checkpoint_seg=checkpoint_seg,
+                          img_w=self.IMG_W, img_h=self.IMG_H)
+        # rospy.loginfo("Ready to detect cables.")
 
         # Run ROS spinner
         spin_rate = rospy.Rate(1)
@@ -71,7 +70,7 @@ class fastdlo_server:
         #                         "real_images/cables.jpg", cv2.IMREAD_COLOR),(self.IMG_W, self.IMG_H))
         # splines, img_out = self.p.run(source_img=source_img, mask_th=200)
 
-        splines, img_out = self.p.run(img,mask_th=200)
+        splines, img_out = self.p.run(img,mask_th=230)
         
         # Display inference time
         rospy.loginfo("Detection time: %s",time.time()-time_start)
