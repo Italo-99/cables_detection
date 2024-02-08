@@ -84,12 +84,11 @@ class fastdlo_server:
         # Fill cables list with cables coords 
         for key, value in splines.items():
             cable = PoseArray()
-            np_cable = value.get('points')
-            for k in range(0,len(np_cable),self.step):
+            for k in range(0,len(value.get('points')),self.step):
                 cable_point = Pose()
                 # Fill cable 2D position with detection coords
-                cable_point.position.x = np_cable[k][0]
-                cable_point.position.y = np_cable[k][1]
+                cable_point.position.x = value.get('points')[k][0]
+                cable_point.position.y = value.get('points')[k][1]
                 cable.poses.append(cable_point)
             # Add the spline to the tuple of detected cables
             cables.append(cable)
@@ -101,7 +100,8 @@ class fastdlo_server:
         # cv2.waitKey(1000)
             
         # Display total service computational demand time
-        rospy.loginfo("Service computation time: %s",rospy.get_time()-start_time_service)
+        rospy.loginfo("Service computation time: %s",
+                      rospy.get_time()-start_time_service-detection_time)
 
         # Process results for test purposes
         if self.check_detection:
