@@ -10,11 +10,10 @@ from    fastdlo_core.core       import Pipeline
 from    cv_bridge               import CvBridge
 import  cv2
 from    geometry_msgs.msg       import PoseArray,Pose
-# import  matplotlib.pyplot as plt
 import  numpy as np
 import  os
 import  rospkg,rospy
-# from    scipy.interpolate import splev, splprep, splrep
+from    fastdlo_detection       import process_result_core
 from    sensor_msgs.msg         import Image
 import  time
 
@@ -43,11 +42,14 @@ class fastdlo_server:
         self.IMG_H = rospy.get_param('~image_height')
         self.IMG_W = rospy.get_param('~image_width')
         self.step  = rospy.get_param('~steps_cable')  # points "jumped" in the spline msg, default: 10
+        
+        # Set cable 2D pose printer
+        self.check_detection = rospy.get_param('~check_detection')
 
         # Call an instance of core.py pipeline fastdlo solver 
         self.p = Pipeline(checkpoint_siam=checkpoint_siam, checkpoint_seg=checkpoint_seg,
                           img_w=self.IMG_W, img_h=self.IMG_H)
-        # rospy.loginfo("Ready to detect cables.")
+        rospy.loginfo("Ready to detect cables.")
 
         # Run ROS spinner
         spin_rate = rospy.Rate(1)
@@ -56,6 +58,9 @@ class fastdlo_server:
 
     def splines_cables_detection(self,req):
 
+        # Measure total service computation time
+        start_time_service = rospy.get_time()
+
         # Create the list of PoseArray
         cables = []
 
@@ -63,7 +68,7 @@ class fastdlo_server:
         img = CvBridge().imgmsg_to_cv2(req.input_image,req.input_image.encoding)
 
         # Measure inference time
-        time_start = time.time()
+        inf_time_start = rospy.get_time()
 
         # # Detect cables within images already saved in a folder
         # source_img = cv2.resize(cv2.imread(self.fastdlo_images_path+
@@ -73,7 +78,8 @@ class fastdlo_server:
         splines, img_out = self.p.run(img,mask_th=230)
         
         # Display inference time
-        rospy.loginfo("Detection time: %s",time.time()-time_start)
+        detection_time = rospy.get_time()-inf_time_start
+        rospy.loginfo("Detection time: %s",detection_time)
 
         # Fill cables list with cables coords 
         for key, value in splines.items():
@@ -93,6 +99,13 @@ class fastdlo_server:
         # cv2.imshow("input", img)
         # cv2.imshow("output", img_out)
         # cv2.waitKey(1000)
+            
+        # Display total service computational demand time
+        rospy.loginfo("Service computation time: %s",rospy.get_time()-start_time_service)
+
+        # Process results for test purposes
+        if self.check_detection:
+            process_result_core(splines,img_out,self.IMG_W,self.IMG_H)
 
         return [cables]
     

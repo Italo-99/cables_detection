@@ -44,7 +44,7 @@ def tck_from_xyspline(spline):
     return tck
 
 # Plot a 2d spline given knots, control points and spline degree
-def plot_2d_spline(tck,color):
+def plot_2d_spline(tck,color,IMG_H):
 
     spline_points,tck = xyspline_from_tck(tck)  # Transform tck values into xy coords
 
@@ -59,7 +59,7 @@ def plot_2d_spline(tck,color):
     # plt.scatter(*zip(*c_p), color='red', label='Control Points',marker='o')
 
     # Plot the spline curve
-    plt.plot(spline_points[0],spline_points[1],label=f'Spline (k={k})',color=color)
+    plt.plot(spline_points[0],IMG_H-spline_points[1],label=f'Spline (k={k})',color=color)
 
     # Set labels and legend
     plt.xlabel('Image width  - w')
@@ -70,14 +70,12 @@ def plot_2d_spline(tck,color):
     # plt.show()
 
 # Process data coming from spline of core.py (overall dict, spline with main coordinates AND tck)
-def process_result_core(splines,mask_out):
+def process_result_core(splines,mask_out,IMG_W,IMG_H):
 
     # Get splines image from spline items to verify xy points are pixels coordinates
     cables = []
     for key, value in splines.items():                      # Iterate over the cables
         cables.append(np.int64(value.get('points')))        # Get cables 2D pixels coordinates
-    IMG_H = 480
-    IMG_W = 640
     spline_img = np.zeros((IMG_H,IMG_W,3), dtype=int)       # Convert spline to image
 
     # Store some colors in the image if that coordinate is in the cables array of np.arrays
@@ -119,7 +117,7 @@ def process_result_core(splines,mask_out):
 
         # Compute tck values and print
         tck = tck_from_xyspline(splinexy)  # Pass (x,y) spline values as ndarray
-        plot_2d_spline(tck,colors[index])
+        plot_2d_spline(tck,colors[index],IMG_H)
         index += 1
 
     # Show the curve computed
@@ -200,7 +198,7 @@ if __name__ == "__main__":
     print("Detection time: {}".format(time.time()-time_start))
 
     # Process and display the results
-    process_result_core(spline, img_out)    # key:{points,der,der2,radius,splineextended(t,c,k)}
+    process_result_core(spline, img_out, IMG_W, IMG_H)    # key:{points,der,der2,radius,splineextended(t,c,k)}
 
     # FASTDLO.PY PIPELINE
 
