@@ -158,6 +158,7 @@ class fastdlo_server:
 
         # Process results for test purposes
         if self.check_detection:
+            rospy.loginfo("Print fastdlo result")
             process_result_core(splines,img_out,self.IMG_W,self.IMG_H)
 
         return [cables]
