@@ -79,12 +79,14 @@ class fastdlo_server:
         rospack         = rospkg.RosPack()
         package_path    = rospack.get_path('cables_detection')
         script_path     = package_path + "/scripts/fastdlo_core/"
-        # self.fastdlo_images_path = package_path + "/scripts/figures_test/fastdlo/"  
         ckpt_siam_name  = "CP_similarity.pth"
         ckpt_seg_name   = "CP_segmentation.pth"
         checkpoint_siam = os.path.join(script_path, "checkpoints/" + ckpt_siam_name)
         checkpoint_seg  = os.path.join(script_path, "checkpoints/" + ckpt_seg_name)
         
+        # Test the following path for test
+        self.fastdlo_images_path = package_path + "/scripts/figures_test/fastdlo/"  
+
         # Initialize ROS node
         rospy.init_node('fastdlo_server')
 
@@ -92,9 +94,10 @@ class fastdlo_server:
         rospy.Service('fastdlo', Cables2D_Poses, self.splines_cables_detection)
 
         # Get node params
-        self.IMG_H = rospy.get_param('~image_height')
-        self.IMG_W = rospy.get_param('~image_width')
-        self.step  = rospy.get_param('~steps_cable')  # points "jumped" in the spline msg, default: 10
+        self.IMG_H      = rospy.get_param('~image_height')
+        self.IMG_W      = rospy.get_param('~image_width')
+        self.step       = rospy.get_param('~steps_cable')  # points "jumped" in the spline msg, default: 10
+        self.mask_th    = rospy.get_param('~mask_th')
         
         # Set cable 2D pose printer
         self.check_detection = rospy.get_param('~check_detection')
@@ -123,12 +126,12 @@ class fastdlo_server:
         # Measure inference time
         inf_time_start = rospy.get_time()
 
-        # # Detect cables within images already saved in a folder
+        # Detect cables within images already saved in a folder (for tests)
         # source_img = cv2.resize(cv2.imread(self.fastdlo_images_path+
         #                         "real_images/cables.jpg", cv2.IMREAD_COLOR),(self.IMG_W, self.IMG_H))
         # splines, img_out = self.p.run(source_img=source_img, mask_th=200)
 
-        splines, img_out = self.p.run(img,mask_th=230)
+        splines, img_out = self.p.run(img,mask_th=self.mask_th)
         
         # Display inference time
         detection_time = rospy.get_time()-inf_time_start
@@ -145,16 +148,16 @@ class fastdlo_server:
                 cable.poses.append(cable_point)
             # Add the spline to the tuple of detected cables
             cables.append(cable)
+            
+        # Display total service computational demand time
+        rospy.loginfo("Service computation time: %s",
+                      rospy.get_time()-start_time_service-detection_time)
         
         # Display results
         # cv2.imshow("input", source_img)
         # cv2.imshow("input", img)
         # cv2.imshow("output", img_out)
-        # cv2.waitKey(1000)
-            
-        # Display total service computational demand time
-        rospy.loginfo("Service computation time: %s",
-                      rospy.get_time()-start_time_service-detection_time)
+        # cv2.waitKey(5000)
 
         # Process results for test purposes
         if self.check_detection:
