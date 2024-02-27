@@ -123,7 +123,7 @@ def plot_2d_spline(tck,color,IMG_H):
     # plt.show()
 
 # Process data coming from spline of core.py (overall dict, spline with main coordinates AND tck)
-def process_result_core(splines,mask_out,IMG_W,IMG_H):
+def process_result_core(splines,mask_out,IMG_W,IMG_H,source_img):
 
     # Get splines image from spline items to verify xy points are pixels coordinates
     cables = []
@@ -132,8 +132,10 @@ def process_result_core(splines,mask_out,IMG_W,IMG_H):
     spline_img = np.zeros((IMG_H,IMG_W,3), dtype=int)       # Convert spline to image
 
     # Store some colors in the image if that coordinate is in the cables array of np.arrays
-    colors = [[1,0,0],[0,1,0],[0,0,1]]
-    for k in range(len(cables)):
+    colors = [[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[1,1,1],
+              [0.5,0.5,0.5],[0.5,0.5,0],[0.5,0,0.5],[0,0.5,0.5]]
+
+    for k in range(min(len(cables),len(colors))):
         for x, y in cables[k]:
             spline_img[x,y,0] = colors[k][0]
             spline_img[x,y,1] = colors[k][1]
@@ -146,12 +148,12 @@ def process_result_core(splines,mask_out,IMG_W,IMG_H):
     # canvas = cv2.addWeighted(canvas, 1.0, mask_out, 0.8, 0.0)
     
     # Show the results
-    # cv2.imshow("input", source_img)
+    cv2.imshow("input", source_img)
     # cv2.imshow("canvas", canvas)
-    # cv2.imshow("output", mask_out)
-    # cv2.imshow("mySpline",spline_img)
-    # cv2.waitKey(1000)                  # Wait 5 seconds than close
-    # cv2.destroyAllWindows()
+    cv2.imshow("output", mask_out)
+    cv2.imshow("mySpline",spline_img)
+    cv2.waitKey(5000)                  # Wait 5 seconds than close
+    cv2.destroyAllWindows()
 
     # Compute tck B-curve values from xy spline (to show that they are similar to
     #   tck values already in the cables array)

@@ -121,7 +121,7 @@ class fastdlo_server:
         cables = []
 
         # Detect cables within the current scene frame
-        img = CvBridge().imgmsg_to_cv2(req.input_image,req.input_image.encoding)
+        source_img = CvBridge().imgmsg_to_cv2(req.input_image,req.input_image.encoding)
 
         # Measure inference time
         inf_time_start = rospy.get_time()
@@ -131,7 +131,7 @@ class fastdlo_server:
         #                         "real_images/cables.jpg", cv2.IMREAD_COLOR),(self.IMG_W, self.IMG_H))
         # splines, img_out = self.p.run(source_img=source_img, mask_th=200)
 
-        splines, img_out = self.p.run(img,mask_th=self.mask_th)
+        splines, img_out = self.p.run(source_img,mask_th=self.mask_th)
         
         # Display inference time
         detection_time = rospy.get_time()-inf_time_start
@@ -152,17 +152,20 @@ class fastdlo_server:
         # Display total service computational demand time
         rospy.loginfo("Service computation time: %s",
                       rospy.get_time()-start_time_service-detection_time)
-        
-        # Display results
-        # cv2.imshow("input", source_img)
-        # cv2.imshow("input", img)
-        # cv2.imshow("output", img_out)
-        # cv2.waitKey(5000)
 
-        # Process results for test purposes
-        if self.check_detection:
-            rospy.loginfo("Print fastdlo result")
-            process_result_core(splines,img_out,self.IMG_W,self.IMG_H)
+        # Display results        
+        if (len(cables)>0):
+
+            # cv2.imshow("input", source_img)
+            # cv2.imshow("output", img_out)
+            # cv2.waitKey(5000)
+
+            # Process results for test purposes
+            if self.check_detection:
+                rospy.loginfo("Print fastdlo result")
+                process_result_core(splines,img_out,self.IMG_W,self.IMG_H,source_img)
+        else:
+            rospy.loginfo("No cables found")
 
         return [cables]
     
