@@ -174,6 +174,8 @@ def process_result_core(splines,mask_out,IMG_W,IMG_H,source_img):
         tck = tck_from_xyspline(splinexy)  # Pass (x,y) spline values as ndarray
         plot_2d_spline(tck,colors[index],IMG_H)
         index += 1
+        if (index >= 3):
+            break
 
     # Show the curve computed
     plt.tight_layout()
