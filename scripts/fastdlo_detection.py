@@ -148,16 +148,17 @@ def process_result_core(splines,mask_out,IMG_W,IMG_H,source_img):
     # canvas = cv2.addWeighted(canvas, 1.0, mask_out, 0.8, 0.0)
     
     # Show the results
-    cv2.imshow("input", source_img)
+    # cv2.imshow("input", source_img)
     # cv2.imshow("canvas", canvas)
-    cv2.imshow("output", mask_out)
-    cv2.imshow("mySpline",spline_img)
-    cv2.waitKey(5000)                  # Wait 5 seconds than close
-    cv2.destroyAllWindows()
+    # cv2.imshow("output", mask_out)
+    # cv2.imshow("mySpline",spline_img)
+    # cv2.waitKey(5000)                  # Wait 5 seconds than close
+    # cv2.destroyAllWindows()
 
     # Compute tck B-curve values from xy spline (to show that they are similar to
     #   tck values already in the cables array)
-    colors = ['red','blue','green']
+    colors = ['red','blue','green','cyan','magenta',
+              'yellow','black']
     index = 0
 
     # Iterate over cables
