@@ -97,7 +97,7 @@ def tck_from_xyspline(spline):
     return tck
 
 # Plot a 2d spline given knots, control points and spline degree
-def plot_2d_spline(tck,color,IMG_H):
+def plot_2d_spline(tck,color,IMG_H,IMG_W):
 
     spline_points,tck = xyspline_from_tck(tck)  # Transform tck values into xy coords
 
@@ -117,6 +117,8 @@ def plot_2d_spline(tck,color,IMG_H):
     # Set labels and legend
     plt.xlabel('Image width  - w')
     plt.ylabel('Image height - h')
+    plt.xlim(0, IMG_W)
+    plt.ylim(0, IMG_H)
     plt.legend()
 
     # Show the plot
@@ -173,7 +175,7 @@ def process_result_core(splines,mask_out,IMG_W,IMG_H,source_img):
 
         # Compute tck values and print
         tck = tck_from_xyspline(splinexy)  # Pass (x,y) spline values as ndarray
-        plot_2d_spline(tck,colors[index],IMG_H)
+        plot_2d_spline(tck,colors[index],IMG_H,IMG_W)
         index += 1
         if (index >= 3):
             break
