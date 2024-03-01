@@ -142,9 +142,9 @@ class fastdlo_server:
             cable = PoseArray()
             for k in range(0,len(value.get('points')),self.step):
                 cable_point = Pose()
-                # Fill cable 2D position with detection coords
-                cable_point.position.x = value.get('points')[k][0]
-                cable_point.position.y = value.get('points')[k][1]
+                # Fill cable 2D position with detection coords (BE CAREFUL ABOUT XY FRAME ORIENTATION)
+                cable_point.position.x = value.get('points')[k][1]
+                cable_point.position.y = value.get('points')[k][0]
                 cable.poses.append(cable_point)
             # Add the spline to the tuple of detected cables
             cables.append(cable)
