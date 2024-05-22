@@ -4,7 +4,7 @@
 *
  * Software License Agreement (Apache Licence 2.0)
  *
- *  Copyright (c) [2024], [Andrea Pupa] [italo Almirante]
+ *  Copyright (c) [2024], [italo Almirante]
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  *
- *  Author: [Andrea Pupa] [Italo Almirante]
+ *  Author: [Italo Almirante]
  *  Created on: [2024-01-17]
 *
 """
@@ -217,7 +217,7 @@ def process_result_fastdlo(splines,mask_out):
     # Close the window
     rospy.signal_shutdown("Shutting down fastdlo detector node")
     
-# CUSTOM MAIN FUNCTION: made by Italo to try understand the way this library works
+# CUSTOM MAIN FUNCTION: an example to show the way this library works
 if __name__ == "__main__":
 
     # Node initialization

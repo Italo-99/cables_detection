@@ -4,7 +4,7 @@
 *
  * Software License Agreement (Apache Licence 2.0)
  *
- *  Copyright (c) [2024], [Andrea Pupa] [italo Almirante]
+ *  Copyright (c) [2024], [italo Almirante]
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -34,28 +34,15 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  *
- *  Author: [Andrea Pupa] [Italo Almirante]
+ *  Author: [Italo Almirante]
  *  Created on: [2024-01-17]
 *
 """
 
-""" 
-CITATIONS
-
-@ARTICLE{9830852,
-  author={Caporali, Alessio and Galassi, Kevin and Zanella, Riccardo and Palli, Gianluca},
-  journal={IEEE Robotics and Automation Letters}, 
-  title={FASTDLO: Fast Deformable Linear Objects Instance Segmentation}, 
-  year={2022},
-  volume={7},
-  number={4},
-  pages={9075-9082},
-  doi={10.1109/LRA.2022.3189791}}
-  """
-
 """ FASTDLO SERVER
-This server can return a list of PoseArray() made up of splines
-from detected cables using FASTDLO method""" 
+    This server returns a list of PoseArray() made up of splines
+    from the detected cables using FASTDLO method
+""" 
 
 # IMPORT LIBRARIES
 from    cables_detection.srv    import Cables2D_Poses
@@ -126,7 +113,7 @@ class fastdlo_server:
         # Measure inference time
         inf_time_start = rospy.get_time()
 
-        # Detect cables within images already saved in a folder (for tests)
+        # Uncomment to detect cables within images already saved in a folder (for tests)
         # source_img = cv2.resize(cv2.imread(self.fastdlo_images_path+
         #                         "real_images/cables.jpg", cv2.IMREAD_COLOR),(self.IMG_W, self.IMG_H))
         # splines, img_out = self.p.run(source_img=source_img, mask_th=200)
@@ -155,6 +142,9 @@ class fastdlo_server:
 
         # Display results        
         if (len(cables)>0):
+
+            # Uncomment the three lines below to show cv2 display 
+            # Note that it causes ROS crash after the first detection
 
             # cv2.imshow("input", source_img)
             # cv2.imshow("output", img_out)
