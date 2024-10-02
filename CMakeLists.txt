@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 2.8.3)
 cmake_policy(SET CMP0048 NEW)
 project(cables_detection)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+
 add_compile_options(-std=c++11)
 set(CMAKE_CXX_STANDARD 14)
 
